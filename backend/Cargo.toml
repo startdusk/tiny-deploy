@@ -1,0 +1,19 @@
+[package]
+name = "backend"
+version = "0.1.0"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+async-trait = "0.1.72"
+data-url = "0.3.0"
+deno_ast = "0"
+deno_core = "0"
+deno_graph = "0.50.0"
+dirs = "5.0.1"
+phf = { version = "0.11.2", features = ["macros"] }
+reqwest = "0.11.18"
+serde = { version = "1", features = ["derive"] }
+tokio = "1.29.1"
+mime = "0.3.16"
