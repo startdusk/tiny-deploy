@@ -1,18 +1,51 @@
-use async_trait::async_trait;
-
-use std::fs::OpenOptions;
-use std::path::PathBuf;
-
+use askama::Template;
 use deno_core::{error::AnyError, ModuleSpecifier};
 use deno_graph::{GraphKind, ModuleGraph};
-pub mod config_file;
-pub mod loader;
-pub mod utils;
+use derive_builder::Builder;
+use std::{fs::OpenOptions, sync::Arc};
+use std::{
+    io::Write,
+    path::{Path, PathBuf},
+};
 
-#[async_trait]
-pub trait ModuleStore: std::fmt::Debug + Send + Sync {
-    async fn get(&self, specifier: &str) -> Result<Box<[u8]>, AnyError>;
-    async fn put(&self, specifier: String, code: &[u8]) -> Result<(), AnyError>;
+use crate::utils::ModuleStore;
+
+mod config;
+pub mod hook;
+pub mod loader;
+pub mod minify;
+pub mod options;
+pub mod output;
+
+pub use config::*;
+
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub enum BundleType {
+    MainModule,
+    /// Return the emitted contents of the program as a single "flattened" ES
+    /// module.
+    Module,
+    /// Return the emitted contents of the program as a single script that
+    /// executes the program using an immediately invoked function execution
+    /// (IIFE).
+    Classic,
+}
+
+#[derive(Builder, Clone)]
+#[builder(default, pattern = "owned")]
+pub struct BundleOptions {
+    pub bundle_type: BundleType,
+    pub ts_config: TsConfig,
+    pub emit_ignore_directives: bool,
+    pub module_store: Option<Arc<dyn ModuleStore>>,
+    pub minify: bool,
+}
+
+#[derive(Template)]
+#[template(path = "layout.j2", escape = "none")]
+struct BundledJs {
+    body: String,
+    bundle_type: BundleType,
 }
 
 pub async fn bundle(

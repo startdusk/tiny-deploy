@@ -4,7 +4,7 @@ use data_url::DataUrl;
 use deno_core::{anyhow::bail, error::AnyError, ModuleSpecifier};
 use std::{sync::Arc, time::Duration};
 
-use crate::bundler::ModuleStore;
+use crate::utils::ModuleStore;
 
 #[derive(Clone, Debug)]
 pub struct UniversalModuleLoader {

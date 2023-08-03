@@ -1,6 +1,6 @@
 use super::FsModuleStore;
-use crate::bundler::utils::fs_util::to_hash_path;
-use crate::bundler::ModuleStore;
+use crate::utils::fs_util::to_hash_path;
+use crate::utils::ModuleStore;
 use async_trait::async_trait;
 use deno_core::{anyhow::bail, error::AnyError};
 use dirs::home_dir;
@@ -51,7 +51,7 @@ impl ModuleStore for FsModuleStore {
 #[cfg(test)]
 mod tests {
     use super::FsModuleStore;
-    use crate::bundler::ModuleStore;
+    use crate::utils::ModuleStore;
     use std::path::PathBuf;
 
     #[tokio::test]

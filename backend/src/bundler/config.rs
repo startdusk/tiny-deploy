@@ -1,9 +1,7 @@
-use deno_core::ModuleSpecifier;
 use deno_core::{
     error::AnyError,
     serde_json::{self, json, Value},
 };
-use serde::{Deserialize, Serialize, Serializer};
 
 /// A structure for managing the configuration of TypeScript
 #[derive(Debug, Clone)]
@@ -19,6 +17,23 @@ impl TsConfig {
     pub fn merge(&mut self, value: &Value) {
         json_merge(&mut self.0, value);
     }
+}
+
+use serde::Deserialize;
+
+#[derive(Debug, Deserialize)]
+#[serde(rename_all = "camelCase")]
+pub struct EmitConfigOptions {
+    pub check_js: bool,
+    pub emit_decorator_metadata: bool,
+    pub imports_not_used_as_values: String,
+    pub inline_source_map: bool,
+    pub inline_sources: bool,
+    pub source_map: bool,
+    pub jsx: String,
+    pub jsx_factory: String,
+    pub jsx_fragment_factory: String,
+    pub jsx_import_source: Option<String>,
 }
 
 impl From<TsConfig> for deno_ast::EmitOptions {

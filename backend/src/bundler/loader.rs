@@ -5,7 +5,7 @@ use deno_ast::{
         common::{comments::SingleThreadedComments, FileName, Mark, SourceMap, Spanned},
         parser::{error::Error as SwcError, lexer::Lexer, StringInput},
     },
-    Diagnostic, LineAndColumnDisplay, MediaType, SourceRangedForSpanned,
+    Diagnostic, MediaType, SourceRangedForSpanned,
 };
 
 use deno_core::{anyhow::anyhow, error::AnyError, ModuleSpecifier};
@@ -141,10 +141,11 @@ fn swc_err_to_diagnostic(
     Diagnostic {
         specifier: specifier.to_string(),
         range: err.range(),
-        display_position: LineAndColumnDisplay {
-            line_number: location.line,
-            column_number: location.col_display + 1,
-        },
+        // display_position: LineAndColumnDisplay {
+        //     line_number: location.line,
+        //     column_number: location.col_display + 1,
+        // },
         kind: err.into_kind(),
+        source: todo!(),
     }
 }

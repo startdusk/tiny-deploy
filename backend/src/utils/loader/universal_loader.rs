@@ -17,8 +17,8 @@ use std::pin::Pin;
 use std::str;
 use std::sync::Arc;
 
-use crate::bundler::utils::store::FsModuleStore;
-use crate::bundler::utils::to_static_str;
+use crate::utils::store::FsModuleStore;
+use crate::utils::to_static_str;
 
 use super::{get_source_code, ModuleStore, UniversalModuleLoader};
 
